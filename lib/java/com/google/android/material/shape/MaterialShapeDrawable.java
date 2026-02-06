@@ -1110,9 +1110,19 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     strokePathDirty = true;
     super.onBoundsChange(bounds);
     if (drawableState.shapeAppearance.isStateful() && !bounds.isEmpty()) {
-      // When bounds change, we want to snap to the new shape without animation.
-      updateShape(getState(), /* skipAnimation= */ true);
+      // When bounds change, we want to snap to the new shape without animation, unless there is
+      // an ongoing animation.
+      updateShape(getState(), /* skipAnimation= */ !isCornerSpringAnimationRunning());
     }
+  }
+
+  private boolean isCornerSpringAnimationRunning() {
+    for (SpringAnimation springAnimation : cornerSpringAnimations) {
+      if (springAnimation != null && springAnimation.isRunning()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
