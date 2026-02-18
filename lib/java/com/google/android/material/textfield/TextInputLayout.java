@@ -4189,7 +4189,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     boolean updatedIcon = false;
     // Update start dummy drawable if needed.
     if (shouldUpdateStartDummyDrawable()) {
-      int right = startLayout.getMeasuredWidth() - editText.getPaddingLeft();
+      int right = Math.max(0, startLayout.getMeasuredWidth() - editText.getPaddingLeft());
       if (startDummyDrawable == null || startDummyDrawableWidth != right) {
         startDummyDrawable = new ColorDrawable();
         startDummyDrawableWidth = right;
@@ -4219,6 +4219,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
                 + iconView.getMeasuredWidth()
                 + ((MarginLayoutParams) iconView.getLayoutParams()).getMarginStart();
       }
+      right = Math.max(0, right);
       final Drawable[] compounds = editText.getCompoundDrawablesRelative();
       if (endDummyDrawable != null && endDummyDrawableWidth != right) {
         // If endLayout only changed width, update dummy drawable here so that we don't override
