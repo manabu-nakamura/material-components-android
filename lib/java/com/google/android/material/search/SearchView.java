@@ -425,6 +425,13 @@ public class SearchView extends FrameLayout
     }
     editText.setText(text);
     editText.setHint(hint);
+    // Make sure IME is hidden when EditText loses focuses.
+    editText.setOnFocusChangeListener(
+        (v, hasFocus) -> {
+          if (!hasFocus) {
+            ViewUtils.hideKeyboard(v, useWindowInsetsController);
+          }
+        });
   }
 
   private void setUpBackButton(boolean useDrawerArrowDrawable, boolean hideNavigationIcon) {
@@ -473,7 +480,7 @@ public class SearchView extends FrameLayout
     contentContainer.setOnTouchListener(
         (v, event) -> {
           if (isAdjustNothingSoftInputMode()) {
-            clearFocusAndHideKeyboard();
+            editText.clearFocus();
           }
           return false;
         });
